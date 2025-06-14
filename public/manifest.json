@@ -1,0 +1,23 @@
+{
+  "name": "スケマネ - 友達と楽しく予定管理",
+  "short_name": "スケマネ",
+  "description": "友達や家族と共有できる夢の世界のような予定管理アプリ",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFE5EC",
+  "theme_color": "#f97316",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "id": "schemanager-pwa",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "32x32",
+      "type": "image/x-icon"
+    }
+  ],
+  "categories": ["productivity", "social", "lifestyle"],
+  "lang": "ja",
+  "dir": "ltr",
+  "prefer_related_applications": false
+}

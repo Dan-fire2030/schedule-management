@@ -1,0 +1,211 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import '../styles/chat-animations.css';
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
+
+  * {
+    @apply border-gray-200;
+  }
+
+  body {
+    @apply text-gray-900;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .bg-magic {
+    background-image: 
+      radial-gradient(circle at 20% 80%, #FFE5EC 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, #E8DFFF 0%, transparent 50%),
+      radial-gradient(circle at 40% 40%, #DBE9FF 0%, transparent 50%);
+  }
+
+  .bg-arabian {
+    background-color: #fef7ed;
+  }
+
+  .shadow-dream {
+    box-shadow: 
+      0 4px 6px -1px rgba(255, 182, 193, 0.1),
+      0 2px 4px -1px rgba(255, 182, 193, 0.06),
+      0 10px 15px -3px rgba(147, 197, 253, 0.1),
+      0 4px 6px -2px rgba(147, 197, 253, 0.05);
+  }
+
+  .shadow-soft {
+    box-shadow: 
+      0 2px 8px rgba(0, 0, 0, 0.06),
+      0 4px 16px rgba(0, 0, 0, 0.04);
+  }
+
+  /* 複数行テキストの切り詰め */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+  }
+
+  .shadow-inner-glow {
+    box-shadow: 
+      inset 0 2px 4px rgba(0, 0, 0, 0.06),
+      inset 0 0 0 1px rgba(0, 0, 0, 0.04);
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent;
+  }
+
+}
+
+/* スクロールバーのカスタマイズ */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-pastel-pink/20;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gradient-to-b from-pastel-purple to-pastel-blue;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply opacity-80;
+}
+
+/* アニメーション */
+.animate-in {
+  animation: animateIn 0.3s ease-out;
+}
+
+@keyframes animateIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.animate-sparkle {
+  animation: sparkle 3s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-bounce-soft {
+  animation: bounceSoft 2s ease-in-out infinite;
+}
+
+@keyframes bounceSoft {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* ダークモード対応 */
+.dark {
+  @apply bg-gray-900 text-gray-100;
+}
+
+.dark .bg-magic {
+  background-image: 
+    radial-gradient(circle at 20% 80%, rgba(255, 229, 236, 0.2) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(232, 223, 255, 0.2) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(219, 233, 255, 0.2) 0%, transparent 50%);
+}
+
+.dark .bg-arabian {
+  @apply bg-gray-800;
+}
+
+/* ダークモード用カード */
+.dark .shadow-dream {
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.3),
+    0 2px 4px -1px rgba(0, 0, 0, 0.2),
+    0 10px 15px -3px rgba(0, 0, 0, 0.2),
+    0 4px 6px -2px rgba(0, 0, 0, 0.1);
+}
+
+.dark .shadow-soft {
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* ダークモード用スクロールバー */
+.dark::-webkit-scrollbar-track {
+  @apply bg-gray-800;
+}
+
+.dark::-webkit-scrollbar-thumb {
+  @apply bg-gradient-to-b from-gray-600 to-gray-700;
+}
+
+/* ダークモード用テキストグラデーション */
+.dark .text-gradient {
+  @apply bg-gradient-to-r from-primary-300 to-secondary-300 bg-clip-text text-transparent;
+}

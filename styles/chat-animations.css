@@ -1,0 +1,198 @@
+/* チャット用アニメーション */
+
+@keyframes messageSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes messageSlideOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+}
+
+@keyframes stampBounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  40% {
+    transform: translateY(-10px) scale(1.1);
+  }
+  60% {
+    transform: translateY(-5px) scale(1.05);
+  }
+}
+
+@keyframes typing {
+  0%, 60%, 100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* メッセージアニメーション */
+.message-enter {
+  animation: messageSlideIn 0.3s ease-out;
+}
+
+.message-exit {
+  animation: messageSlideOut 0.2s ease-in;
+}
+
+/* スタンプアニメーション */
+.stamp-send {
+  animation: stampBounce 0.6s ease-in-out;
+}
+
+/* タイピングインジケーター */
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+  background: #f1f3f4;
+  border-radius: 18px;
+  margin: 8px 0;
+}
+
+.typing-dot {
+  width: 6px;
+  height: 6px;
+  background: #9ca3af;
+  border-radius: 50%;
+  animation: typing 1.4s infinite ease-in-out;
+}
+
+.typing-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* チャット入力エリアアニメーション */
+.chat-input-focus {
+  transition: all 0.2s ease-out;
+  transform: scale(1.02);
+  box-shadow: 0 0 0 2px rgba(147, 51, 234, 0.2);
+}
+
+/* スタンプピッカーアニメーション */
+.stamp-picker-enter {
+  animation: slideUp 0.3s ease-out;
+}
+
+.stamp-picker-exit {
+  animation: slideUp 0.2s ease-in reverse;
+}
+
+/* メッセージバブルホバーアニメーション */
+.message-bubble {
+  transition: all 0.2s ease-out;
+}
+
+.message-bubble:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 既読状況のアニメーション */
+.read-status-enter {
+  animation: fadeIn 0.2s ease-out;
+}
+
+/* モーダルアニメーション */
+.modal-backdrop {
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal-content {
+  animation: scaleIn 0.3s ease-out;
+}
+
+/* レスポンシブアニメーション - モバイル用に簡略化 */
+@media (max-width: 768px) {
+  .message-enter {
+    animation: messageSlideIn 0.2s ease-out;
+  }
+  
+  .stamp-send {
+    animation: stampBounce 0.4s ease-in-out;
+  }
+  
+  .stamp-picker-enter {
+    animation: slideUp 0.2s ease-out;
+  }
+}
+
+/* アクセシビリティ: アニメーション無効化 */
+@media (prefers-reduced-motion: reduce) {
+  .message-enter,
+  .message-exit,
+  .stamp-send,
+  .typing-dot,
+  .chat-input-focus,
+  .stamp-picker-enter,
+  .stamp-picker-exit,
+  .message-bubble,
+  .read-status-enter,
+  .modal-backdrop,
+  .modal-content {
+    animation: none !important;
+    transition: none !important;
+  }
+}
