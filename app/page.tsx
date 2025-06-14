@@ -1,12 +1,11 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuthSimplified } from '@/hooks/useAuthSimplified'
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/client'
 
-export default function Home() {
+function HomeContent() {
   const { isAuthenticated, loading } = useAuthSimplified()
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -68,4 +67,19 @@ export default function Home() {
       </div>
     </main>
   );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-magic flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-primary-200 border-t-primary-500 rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-gray-600">読み込み中...</p>
+        </div>
+      </div>
+    }>
+      <HomeContent />
+    </Suspense>
+  )
 }
