@@ -7,7 +7,16 @@ export async function GET(request: Request) {
   const error = searchParams.get('error')
   const errorDescription = searchParams.get('error_description')
   
+  console.log('Auth callback received:', {
+    origin,
+    hasCode: !!code,
+    error,
+    errorDescription,
+    url: request.url
+  })
+  
   if (error) {
+    console.error('OAuth error:', error, errorDescription)
     return NextResponse.redirect(`${origin}/auth?error=${encodeURIComponent(errorDescription || error)}`)
   }
 
@@ -15,6 +24,7 @@ export async function GET(request: Request) {
     const supabase = await createClient()
     
     try {
+      console.log('Exchanging code for session...')
       const { data, error } = await supabase.auth.exchangeCodeForSession(code)
       
       if (error) {
