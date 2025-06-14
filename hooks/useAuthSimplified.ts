@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { User } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/client'
 import type { Database } from '@/types/database.types'
+import { getAuthCallbackUrl } from '@/lib/utils/auth'
 
 type Profile = Database['public']['Tables']['profiles']['Row']
 
@@ -101,17 +102,10 @@ export function useAuthSimplified() {
   const signInWithGoogle = async () => {
     const supabase = createClient()
     
-    // 本番環境とローカル環境でリダイレクトURLを適切に設定
-    let redirectTo: string | undefined
-    if (typeof window !== 'undefined') {
-      // クライアントサイドでは現在のオリジンを使用
-      redirectTo = `${window.location.origin}/auth/callback`
-    }
-    
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo,
+        redirectTo: getAuthCallbackUrl(),
         queryParams: {
           access_type: 'offline',
           prompt: 'consent',

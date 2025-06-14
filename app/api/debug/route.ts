@@ -1,9 +1,8 @@
 import { NextResponse } from 'next/server'
+import { getBaseUrl, getAuthCallbackUrl } from '@/lib/utils/auth'
 
 export async function GET() {
-  const origin = process.env.NEXT_PUBLIC_SITE_URL || 
-                 process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 
-                 'http://localhost:3001'
+  const origin = getBaseUrl()
   
   return NextResponse.json({
     env: {
@@ -13,6 +12,7 @@ export async function GET() {
       NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
     },
     origin,
+    authCallbackUrl: getAuthCallbackUrl(),
     timestamp: new Date().toISOString()
   })
 }
