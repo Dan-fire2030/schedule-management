@@ -100,12 +100,22 @@ export function useAuthSimplified() {
 
   const signInWithGoogle = async () => {
     const supabase = createClient()
+    
+    // 本番環境とローカル環境でリダイレクトURLを適切に設定
+    let redirectTo: string | undefined
+    if (typeof window !== 'undefined') {
+      // クライアントサイドでは現在のオリジンを使用
+      redirectTo = `${window.location.origin}/auth/callback`
+    }
+    
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: typeof window !== 'undefined' 
-          ? `${window.location.origin}/auth/callback` 
-          : undefined
+        redirectTo,
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'consent',
+        }
       }
     })
     return { data, error }
