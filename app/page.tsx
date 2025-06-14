@@ -1,19 +1,32 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuthSimplified } from '@/hooks/useAuthSimplified'
 import Link from 'next/link'
+import { createClient } from '@/lib/supabase/client'
 
 export default function Home() {
   const { isAuthenticated, loading } = useAuthSimplified()
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const [isProcessingAuth, setIsProcessingAuth] = useState(false)
 
   useEffect(() => {
-    if (!loading && isAuthenticated) {
+    // OAuthコードがある場合の処理
+    const code = searchParams.get('code')
+    if (code && !isProcessingAuth) {
+      setIsProcessingAuth(true)
+      // auth/callbackにリダイレクト
+      router.push(`/auth/callback?code=${code}`)
+    }
+  }, [searchParams, router, isProcessingAuth])
+
+  useEffect(() => {
+    if (!loading && isAuthenticated && !isProcessingAuth) {
       router.push('/dashboard')
     }
-  }, [isAuthenticated, loading, router])
+  }, [isAuthenticated, loading, router, isProcessingAuth])
 
   if (loading) {
     return (
