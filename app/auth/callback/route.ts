@@ -28,8 +28,13 @@ export async function GET(request: Request) {
       const { data, error } = await supabase.auth.exchangeCodeForSession(code)
       
       if (error) {
-        console.error('Exchange code error:', error)
-        return NextResponse.redirect(`${origin}/auth?error=${encodeURIComponent('認証に失敗しました')}`)
+        console.error('Exchange code error:', {
+          message: error.message,
+          status: error.status,
+          code: error.code || 'unknown',
+          details: error
+        })
+        return NextResponse.redirect(`${origin}/auth?error=${encodeURIComponent(`認証エラー: ${error.message}`)}`)
       }
 
       if (data.user) {

@@ -106,16 +106,30 @@ export function useAuthSimplified() {
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 
                    (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3001')
     
+    const redirectTo = `${baseUrl}/auth/callback`
+    
+    console.log('Starting Google OAuth with:', {
+      baseUrl,
+      redirectTo,
+      supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
+      hasAnonKey: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    })
+    
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${baseUrl}/auth/callback`,
+        redirectTo,
         queryParams: {
           access_type: 'offline',
           prompt: 'consent',
         }
       }
     })
+    
+    if (error) {
+      console.error('OAuth initiation error:', error)
+    }
+    
     return { data, error }
   }
 

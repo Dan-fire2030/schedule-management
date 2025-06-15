@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { LoginForm } from '@/components/auth/LoginForm'
 import { SignupForm } from '@/components/auth/SignupForm'
 import { useAuthSimplified } from '@/hooks/useAuthSimplified'
@@ -10,6 +10,16 @@ export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true)
   const { isAuthenticated, loading } = useAuthSimplified()
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const [authError, setAuthError] = useState('')
+
+  useEffect(() => {
+    const error = searchParams.get('error')
+    if (error) {
+      setAuthError(decodeURIComponent(error))
+      console.error('Auth page error:', error)
+    }
+  }, [searchParams])
 
   useEffect(() => {
     if (!loading && isAuthenticated) {
@@ -57,6 +67,18 @@ export default function AuthPage() {
       </div>
 
       <div className="relative z-10 w-full">
+        {authError && (
+          <div className="max-w-md mx-auto mb-4 p-4 bg-red-50 border border-red-200 rounded-xl">
+            <div className="flex items-center">
+              <div className="text-red-500 mr-2">⚠️</div>
+              <div>
+                <h3 className="text-red-800 font-medium">認証エラー</h3>
+                <p className="text-red-600 text-sm mt-1">{authError}</p>
+              </div>
+            </div>
+          </div>
+        )}
+        
         {isLogin ? (
           <LoginForm onSwitchToSignup={() => setIsLogin(false)} />
         ) : (
