@@ -1,5 +1,6 @@
 import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import type { Database } from '@/types/database.types'
+import { getCleanSupabaseUrl, getCleanSupabaseKey } from '@/lib/utils/env'
 
 // シングルトンパターンでクライアントを管理
 let supabaseClient: ReturnType<typeof createSupabaseClient<Database>> | null = null
@@ -10,16 +11,8 @@ export function createClient() {
     return supabaseClient
   }
 
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  
-  if (!url) {
-    throw new Error('NEXT_PUBLIC_SUPABASE_URLが設定されていません')
-  }
-  
-  if (!key) {
-    throw new Error('NEXT_PUBLIC_SUPABASE_ANON_KEYが設定されていません')
-  }
+  const url = getCleanSupabaseUrl()
+  const key = getCleanSupabaseKey()
   
   supabaseClient = createSupabaseClient<Database>(url, key, {
     auth: {
