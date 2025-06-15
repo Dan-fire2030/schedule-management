@@ -1,4 +1,4 @@
-import { createBrowserClient } from '@supabase/ssr'
+import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import type { Database } from '@/types/database.types'
 
 export function createClient() {
@@ -13,5 +13,11 @@ export function createClient() {
     throw new Error('NEXT_PUBLIC_SUPABASE_ANON_KEYが設定されていません')
   }
   
-  return createBrowserClient<Database>(url, key)
+  return createSupabaseClient<Database>(url, key, {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: true
+    }
+  })
 }
