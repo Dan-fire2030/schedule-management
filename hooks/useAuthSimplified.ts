@@ -102,15 +102,14 @@ export function useAuthSimplified() {
   const signInWithGoogle = async () => {
     const supabase = createClient()
     
-    // 本番環境では固定URL、開発環境では動的URL
-    const redirectTo = process.env.NODE_ENV === 'production' 
-      ? 'https://schedule-management-ujwr.vercel.app/auth/callback'
-      : getAuthCallbackUrl()
+    // 環境変数を使用してベースURLを取得
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 
+                   (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3001')
     
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo,
+        redirectTo: `${baseUrl}/auth/callback`,
         queryParams: {
           access_type: 'offline',
           prompt: 'consent',
