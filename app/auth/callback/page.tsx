@@ -10,6 +10,11 @@ export default function AuthCallbackPage() {
   useEffect(() => {
     const handleAuthCallback = async () => {
       try {
+        console.log('=== AUTH CALLBACK DEBUG ===')
+        console.log('Full URL:', window.location.href)
+        console.log('Hash:', window.location.hash)
+        console.log('Search params:', window.location.search)
+        
         const supabase = createClient()
         
         // URLフラグメントからパラメータを取得
@@ -19,16 +24,32 @@ export default function AuthCallbackPage() {
         const error = hashParams.get('error')
         const errorDescription = hashParams.get('error_description')
 
-        console.log('Auth callback params:', {
+        // URLクエリパラメータからも確認
+        const searchParams = new URLSearchParams(window.location.search)
+        const queryError = searchParams.get('error')
+        const queryErrorDescription = searchParams.get('error_description')
+
+        console.log('Hash params:', {
           accessToken: !!accessToken,
           refreshToken: !!refreshToken,
           error,
-          errorDescription
+          errorDescription,
+          allHashParams: Array.from(hashParams.entries())
         })
 
-        if (error) {
-          console.error('OAuth error:', error, errorDescription)
-          router.push(`/auth?error=${encodeURIComponent(errorDescription || error)}`)
+        console.log('Query params:', {
+          error: queryError,
+          errorDescription: queryErrorDescription,
+          allQueryParams: Array.from(searchParams.entries())
+        })
+
+        // エラーハンドリング（ハッシュパラメータとクエリパラメータ両方をチェック）
+        const finalError = error || queryError
+        const finalErrorDescription = errorDescription || queryErrorDescription
+        
+        if (finalError) {
+          console.error('OAuth error:', finalError, finalErrorDescription)
+          router.push(`/auth?error=${encodeURIComponent(finalErrorDescription || finalError)}`)
           return
         }
 
@@ -74,12 +95,24 @@ export default function AuthCallbackPage() {
         }
 
         // 通常のコールバック処理（コードベース）
-        const { error: authError } = await supabase.auth.getSession()
+        console.log('No access token found, checking for existing session...')
+        const { data: sessionData, error: authError } = await supabase.auth.getSession()
+        
+        console.log('Session check result:', {
+          hasSession: !!sessionData.session,
+          hasUser: !!sessionData.session?.user,
+          error: authError
+        })
+        
         if (authError) {
           console.error('Auth error:', authError)
           router.push(`/auth?error=${encodeURIComponent('認証に失敗しました')}`)
-        } else {
+        } else if (sessionData.session?.user) {
+          console.log('Existing session found, redirecting to dashboard')
           router.push('/dashboard')
+        } else {
+          console.log('No session found, redirecting to auth with error')
+          router.push(`/auth?error=${encodeURIComponent('認証情報が見つかりませんでした')}`)
         }
 
       } catch (error) {
