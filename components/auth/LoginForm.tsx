@@ -44,7 +44,8 @@ export function LoginForm({ onSwitchToSignup }: LoginFormProps) {
     const { error } = await signInWithGoogle()
     
     if (error) {
-      setError('Googleログインに失敗しました')
+      console.error('Google login error:', error)
+      setError(`Googleログインに失敗しました: ${error.message}`)
       setLoading(false)
     }
   }
