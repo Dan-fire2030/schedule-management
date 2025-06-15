@@ -8,8 +8,7 @@ export async function getMessages(groupId: string, limit = 50, offset = 0): Prom
     .from('messages')
     .select(`
       *,
-      user:profiles!user_id(id, username, avatar_url),
-      stamp:stamps(*)
+      user:profiles!user_id(id, username, avatar_url)
     `)
     .eq('group_id', groupId)
     .order('created_at', { ascending: false })
@@ -43,12 +42,10 @@ export async function sendMessage(params: SendMessageParams): Promise<Message> {
       user_id: user.id,
       content: params.content,
       message_type: params.message_type,
-      stamp_id: params.stamp_id,
     })
     .select(`
       *,
-      user:profiles!user_id(id, username, avatar_url),
-      stamp:stamps(*)
+      user:profiles!user_id(id, username, avatar_url)
     `)
     .single();
 
@@ -71,8 +68,7 @@ export async function updateMessage(params: UpdateMessageParams): Promise<Messag
     .eq('id', params.id)
     .select(`
       *,
-      user:profiles!user_id(id, username, avatar_url),
-      stamp:stamps(*)
+      user:profiles!user_id(id, username, avatar_url)
     `)
     .single();
 
@@ -107,8 +103,7 @@ export async function getMessagesWithReadStatus(groupId: string, userId: string,
     .from('messages')
     .select(`
       *,
-      user:profiles!user_id(id, username, avatar_url),
-      stamp:stamps(*)
+      user:profiles!user_id(id, username, avatar_url)
     `)
     .eq('group_id', groupId)
     .order('created_at', { ascending: false })

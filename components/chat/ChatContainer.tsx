@@ -6,7 +6,6 @@ import { getMessages, subscribeToMessages } from '@/lib/supabase/messages';
 import { useAuthSimplified } from '@/hooks/useAuthSimplified';
 import MessageList from './MessageList';
 import MessageInput from './MessageInput';
-import StampPicker from './StampPicker';
 import TypingIndicator from './TypingIndicator';
 
 interface ChatContainerProps {
@@ -22,7 +21,6 @@ export default function ChatContainer({ groupId, groupName, groupTheme }: ChatCo
     error: null,
     hasMore: true,
   });
-  const [showStampPicker, setShowStampPicker] = useState(false);
   const [typingUsers, setTypingUsers] = useState<string[]>([]);
   const [realtimeStatus, setRealtimeStatus] = useState<'connecting' | 'connected' | 'failed' | 'polling'>('connecting');
   const { user } = useAuthSimplified();
@@ -266,22 +264,10 @@ setChatState(prev => {
         <TypingIndicator typingUsers={typingUsers} />
       </div>
 
-      {/* スタンプピッカー */}
-      {showStampPicker && (
-        <StampPicker
-          groupId={groupId}
-          onClose={() => setShowStampPicker(false)}
-          onSent={() => {
-            setShowStampPicker(false);
-          }}
-        />
-      )}
-
       {/* メッセージ入力 */}
       <MessageInput
         groupId={groupId}
         onSent={handleMessageSent}
-        onStampClick={() => setShowStampPicker(true)}
         onOptimisticMessage={handleOptimisticMessage}
       />
     </div>

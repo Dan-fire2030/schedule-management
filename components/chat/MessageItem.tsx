@@ -60,20 +60,6 @@ setIsDeleting(false);
   };
 
   const renderContent = () => {
-    if (message.message_type === 'stamp' && message.stamp) {
-      return (
-        <div className="text-4xl">
-          <Image 
-            src={message.stamp.image_url} 
-            alt={message.stamp.name}
-            width={48}
-            height={48}
-            className="w-12 h-12"
-          />
-        </div>
-      );
-    }
-
     if (isEditing) {
       return (
         <div className="space-y-2">

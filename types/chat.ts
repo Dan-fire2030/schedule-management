@@ -1,22 +1,9 @@
-export interface Stamp {
-  id: string;
-  name: string;
-  image_url: string;
-  category: string;
-  created_by: string | null;
-  is_default: boolean;
-  is_custom?: boolean;
-  emoji?: string;
-  created_at: string;
-}
-
 export interface Message {
   id: string;
   group_id: string;
   user_id: string;
   content: string | null;
-  message_type: 'text' | 'stamp';
-  stamp_id: string | null;
+  message_type: 'text';
   edited_at: string | null;
   created_at: string;
   
@@ -26,7 +13,6 @@ export interface Message {
     username: string;
     avatar_url?: string;
   };
-  stamp?: Stamp;
   reads?: MessageRead[];
 }
 
@@ -54,19 +40,12 @@ export interface ChatState {
 export interface SendMessageParams {
   group_id: string;
   content?: string | null;
-  message_type: 'text' | 'stamp';
-  stamp_id?: string | null;
+  message_type: 'text';
 }
 
 export interface UpdateMessageParams {
   id: string;
   content: string;
-}
-
-export interface CreateStampParams {
-  name: string;
-  image_url: string;
-  category?: string;
 }
 
 export interface MessageWithReads extends Message {

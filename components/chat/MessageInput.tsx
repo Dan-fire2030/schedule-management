@@ -7,11 +7,10 @@ import { useAuthSimplified } from '@/hooks/useAuthSimplified';
 interface MessageInputProps {
   groupId: string;
   onSent: () => void;
-  onStampClick: () => void;
   onOptimisticMessage?: (message: any) => void;
 }
 
-export default function MessageInput({ groupId, onSent, onStampClick, onOptimisticMessage }: MessageInputProps) {
+export default function MessageInput({ groupId, onSent, onOptimisticMessage }: MessageInputProps) {
   const [content, setContent] = useState('');
   const [sending, setSending] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -84,15 +83,6 @@ onOptimisticMessage(optimisticMessage);
   return (
     <div className="bg-white/90 backdrop-blur-sm border-t border-purple-200 p-4">
       <div className="flex items-end space-x-3">
-        {/* スタンプボタン */}
-        <button
-          onClick={onStampClick}
-          className="flex-shrink-0 p-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded-full hover:shadow-lg transition-all duration-200 hover:scale-105"
-          title="スタンプ"
-        >
-          <span className="text-lg">😊</span>
-        </button>
-
         {/* メッセージ入力 */}
         <div className="flex-1 relative">
           <textarea
