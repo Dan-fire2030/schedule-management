@@ -13,29 +13,5 @@ export function createClient() {
     throw new Error('NEXT_PUBLIC_SUPABASE_ANON_KEYが設定されていません')
   }
   
-  // @ts-ignore - 型定義の不一致を無視
-  return createBrowserClient<Database>(
-    url,
-    key,
-    {
-      auth: {
-        persistSession: true,
-        autoRefreshToken: true,
-        detectSessionInUrl: true
-      },
-      realtime: {
-        params: {
-          eventsPerSecond: 10
-        }
-      },
-      global: {
-        headers: {
-          'x-client-info': 'supabase-js-web'
-        }
-      },
-      db: {
-        schema: 'public'
-      }
-    }
-  )
+  return createBrowserClient<Database>(url, key)
 }
