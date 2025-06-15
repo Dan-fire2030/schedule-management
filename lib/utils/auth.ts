@@ -1,8 +1,8 @@
 // 認証関連のユーティリティ関数
 
 export function getBaseUrl() {
-  // 本番環境では固定のメインドメインを使用
-  if (process.env.NODE_ENV === 'production') {
+  // Vercel環境では常に固定のメインドメインを使用
+  if (process.env.VERCEL) {
     return 'https://schedule-management-ujwr.vercel.app'
   }
   
