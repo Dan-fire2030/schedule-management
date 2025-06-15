@@ -152,13 +152,6 @@ export function LoginForm({ onSwitchToSignup }: LoginFormProps) {
           </div>
 
           <button
-            onClick={() => console.log('TEST: Button clicked!')}
-            className="w-full mt-2 bg-blue-500 text-white py-2 rounded text-sm"
-          >
-            テストボタン（クリック確認用）
-          </button>
-          
-          <button
             onClick={handleGoogleLogin}
             disabled={loading}
             className="w-full mt-4 bg-white border border-gray-200 text-gray-700 py-3 rounded-2xl font-medium hover:bg-gray-50 transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:hover:scale-100 flex items-center justify-center space-x-2"
