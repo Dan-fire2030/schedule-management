@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getBaseUrl, getAuthCallbackUrl } from '@/lib/utils/auth'
+import { createClient } from '@/lib/supabase/client'
 
 export async function GET() {
   const vercelUrl = process.env.VERCEL_URL
@@ -9,6 +10,16 @@ export async function GET() {
   
   const origin = getBaseUrl()
   const authCallbackUrl = getAuthCallbackUrl()
+  
+  // Supabaseクライアントのテスト
+  let supabaseStatus = 'unknown'
+  try {
+    const supabase = createClient()
+    const { data, error } = await supabase.from('profiles').select('count').limit(1)
+    supabaseStatus = error ? `error: ${error.message}` : 'connected'
+  } catch (e) {
+    supabaseStatus = `exception: ${e}`
+  }
   
   return NextResponse.json({
     env: {
@@ -21,6 +32,7 @@ export async function GET() {
     },
     origin,
     authCallbackUrl,
+    supabaseStatus,
     timestamp: new Date().toISOString()
   })
 }
