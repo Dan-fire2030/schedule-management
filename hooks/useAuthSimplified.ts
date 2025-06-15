@@ -100,37 +100,49 @@ export function useAuthSimplified() {
   }, [])
 
   const signInWithGoogle = async () => {
-    const supabase = createClient()
+    console.log('signInWithGoogle function called')
     
-    // 環境変数を使用してベースURLを取得
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 
-                   (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3001')
-    
-    const redirectTo = `${baseUrl}/auth/callback`
-    
-    console.log('Starting Google OAuth with:', {
-      baseUrl,
-      redirectTo,
-      supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
-      hasAnonKey: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-    })
-    
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
+    try {
+      console.log('Creating Supabase client...')
+      const supabase = createClient()
+      console.log('Supabase client created successfully')
+      
+      // 環境変数を使用してベースURLを取得
+      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 
+                     (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3001')
+      
+      const redirectTo = `${baseUrl}/auth/callback`
+      
+      console.log('Starting Google OAuth with:', {
+        baseUrl,
         redirectTo,
-        queryParams: {
-          access_type: 'offline',
-          prompt: 'consent',
+        supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
+        hasAnonKey: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+      })
+      
+      console.log('Calling supabase.auth.signInWithOAuth...')
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent',
+          }
         }
+      })
+      
+      if (error) {
+        console.error('OAuth initiation error:', error)
+      } else {
+        console.log('OAuth initiation successful:', data)
       }
-    })
-    
-    if (error) {
-      console.error('OAuth initiation error:', error)
+      
+      return { data, error }
+    } catch (e) {
+      console.error('Exception in signInWithGoogle:', e)
+      return { data: null, error: e as any }
     }
-    
-    return { data, error }
   }
 
   const signInWithUsername = async (username: string, password: string) => {

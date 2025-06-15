@@ -38,14 +38,24 @@ export function LoginForm({ onSwitchToSignup }: LoginFormProps) {
   }
 
   const handleGoogleLogin = async () => {
+    console.log('Google login button clicked')
     setLoading(true)
     setError('')
     
-    const { error } = await signInWithGoogle()
-    
-    if (error) {
-      console.error('Google login error:', error)
-      setError(`Googleログインに失敗しました: ${error.message}`)
+    try {
+      console.log('Calling signInWithGoogle...')
+      const { error } = await signInWithGoogle()
+      
+      if (error) {
+        console.error('Google login error:', error)
+        setError(`Googleログインに失敗しました: ${error.message}`)
+        setLoading(false)
+      } else {
+        console.log('Google login initiated successfully')
+      }
+    } catch (e) {
+      console.error('Exception in handleGoogleLogin:', e)
+      setError(`予期しないエラー: ${e}`)
       setLoading(false)
     }
   }
